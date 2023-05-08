@@ -1,42 +1,97 @@
 package com.xbal.app.jackgames.model;
 
-import java.util.List;
+import java.util.UUID;
 
 public class GameStatus {
-    private String sessionId;
-    private List<PlayerHand> playerHands;
-    private Hand dealerHand;
-    private boolean gameOver;
-    private String message;
+    private UUID sessionId;
+    private boolean isGameCompleted;
+    private boolean isDealerTurn;
+    private boolean isHandStand;
+    private boolean isDealerBust;
+    private boolean isPlayerBust;
+    private boolean isPush;
+    private boolean isPlayerWinner;
+    private boolean isWaitingForPlayers;
 
-    public GameStatus(String sessionId, List<PlayerHand> playerHands, Hand dealerHand, boolean gameOver, String message) {
+    public GameStatus(UUID sessionId) {
         this.sessionId = sessionId;
-        this.playerHands = playerHands;
-        this.dealerHand = dealerHand;
-        this.gameOver = gameOver;
-        this.message = message;
+        isGameCompleted = false;
+        isDealerTurn = false;
+        isHandStand = false;
+        isDealerBust = false;
+        isPlayerBust = false;
+        isPush = false;
+        isPlayerWinner = false;
+        isWaitingForPlayers = true;
     }
 
-    public String getSessionId() {
+    // Getters and setters
+
+    public UUID getSessionId() {
         return sessionId;
     }
 
-    public List<PlayerHand> getPlayerHands() {
-        return playerHands;
+    public boolean isGameCompleted() {
+        return isGameCompleted;
     }
 
-    public Hand getDealerHand() {
-        return dealerHand;
+    public void setGameCompleted(boolean gameCompleted) {
+        isGameCompleted = gameCompleted;
     }
 
-    public boolean isGameOver() {
-        return gameOver;
+    public boolean isDealerTurn() {
+        return isDealerTurn;
     }
 
-    public String getMessage() {
-        return message;
+    public void setDealerTurn(boolean dealerTurn) {
+        isDealerTurn = dealerTurn;
     }
 
-    // Add setters if necessary
+    public boolean isHandStand() {
+        return isHandStand;
+    }
+
+    public void setHandStand(boolean handStand) {
+        isHandStand = handStand;
+    }
+
+    public boolean isDealerBust() {
+        return isDealerBust;
+    }
+
+    public void setDealerBust(boolean dealerBust) {
+        isDealerBust = dealerBust;
+    }
+
+    public boolean isPlayerBust() {
+        return isPlayerBust;
+    }
+
+    public void setPlayerBust(boolean playerBust) {
+        isPlayerBust = playerBust;
+    }
+
+    public boolean isPush() {
+        return isPush;
+    }
+
+    public void setPush(boolean push) {
+        isPush = push;
+    }
+
+    public boolean isPlayerWinner() {
+        return isPlayerWinner;
+    }
+
+    public void setPlayerWinner(boolean playerWinner) {
+        isPlayerWinner = playerWinner;
+    }
+
+    public boolean isWaitingForPlayers() {
+        return isWaitingForPlayers;
+    }
+
+    public void setWaitingForPlayers(boolean waitingForPlayers) {
+        isWaitingForPlayers = waitingForPlayers;
+    }
 }
-

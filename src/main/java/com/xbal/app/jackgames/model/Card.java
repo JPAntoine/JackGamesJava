@@ -1,26 +1,28 @@
 package com.xbal.app.jackgames.model;
 
-enum Suite {
-    Heart,
-    Spade,
-    Diamond,
-    Clubs
-}
-
 public class Card {
-    Integer value;
-    Suite suite;
+    private final Suit suit;
+    private final Rank rank;
 
-    Card(Integer value, Suite suite){
-        this.value = value;
-        this.suite = suite;
+    public Card(Suit suit, Rank rank) {
+        this.suit = suit;
+        this.rank = rank;
+    }
+
+    public Suit getSuit() {
+        return suit;
+    }
+
+    public Rank getRank() {
+        return rank;
     }
 
     public int getValue() {
-        return 0;
+        return rank.getValue();
     }
 
-    public Object getRank() {
-        return null;
+    @Override
+    public String toString() {
+        return rank + " of " + suit;
     }
 }

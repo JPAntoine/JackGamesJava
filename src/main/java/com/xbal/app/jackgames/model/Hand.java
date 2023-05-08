@@ -4,43 +4,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
+    private int betAmount;
     private List<Card> cards;
-    private int value;
 
     public Hand() {
         this.cards = new ArrayList<>();
-        this.value = 0;
+    }
+
+    public Hand(List<Card> cards) {
+        this.cards = cards;
     }
 
     public void addCard(Card card) {
         cards.add(card);
-        value += card.getValue();
-        if (value > 21 && hasAce()) {
-            value -= 10;
-        }
     }
 
-    private boolean hasAce() {
+    public int getValue() {
+        int value = 0;
+        int numAces = 0;
         for (Card card : cards) {
             if (card.getRank() == Rank.ACE) {
-                return true;
+                numAces++;
+                value += 11;
+            } else if (card.getRank().ordinal() >= Rank.TEN.ordinal()) {
+                value += 10;
+            } else {
+                value += card.getRank().ordinal() + 1;
             }
         }
-        return false;
-    }
-
-    public void clear() {
-        cards.clear();
-        value = 0;
+        while (value > 21 && numAces > 0) {
+            value -= 10;
+            numAces--;
+        }
+        return value;
     }
 
     public List<Card> getCards() {
         return cards;
     }
 
-    public int getValue() {
-        return value;
+    public int getBetAmount() {
+        return betAmount;
     }
 
-    // Add setters if necessary
+    public void setBetAmount(int betAmount) {
+        this.betAmount = betAmount;
+    }
 }

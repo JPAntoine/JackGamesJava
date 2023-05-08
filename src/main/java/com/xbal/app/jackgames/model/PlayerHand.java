@@ -1,41 +1,44 @@
 package com.xbal.app.jackgames.model;
 
-public class PlayerHand {
-    private String playerId;
-    private Hand hand;
-    private boolean isBust;
-    private boolean isStand;
+import java.util.List;
 
-    public PlayerHand(String playerId) {
-        this.playerId = playerId;
-        this.hand = new Hand();
-        this.isBust = false;
-        this.isStand = false;
+import com.xbal.app.jackgames.exceptions.InvalidGameStateException;
+
+public class PlayerHand extends Hand {
+    private boolean isSplit;
+
+    public PlayerHand(List<Card> cards) {
+        super(cards);
+        this.isSplit = false;
     }
 
-    public String getPlayerId() {
-        return playerId;
+    public boolean isSplit() {
+        return isSplit;
     }
 
-    public Hand getHand() {
-        return hand;
+    public boolean canSplit() {
+        if (super.getCards().size() == 2 && super.getCards().get(0).getRank() == super.getCards().get(1).getRank()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public boolean isBust() {
-        return isBust;
-    }
+    public List<PlayerHand> split() {
+        if (super.getCards().size() == 2 && super.getCards().get(0).getRank() == super.getCards().get(1).getRank()) {
+            Card card1 = super.getCards().get(0);
+            Card card2 = super.getCards().get(1);
 
-    public void setBust(boolean bust) {
-        isBust = bust;
-    }
+            List<PlayerHand> newHands = List.of(
+                    new PlayerHand(List.of(card1)),
+                    new PlayerHand(List.of(card2)));
 
-    public boolean isStand() {
-        return isStand;
-    }
+            newHands.get(0).setBetAmount(super.getBetAmount());
+            newHands.get(1).setBetAmount(super.getBetAmount());
 
-    public void setStand(boolean stand) {
-        isStand = stand;
+            return newHands;
+        } else {
+            throw new InvalidGameStateException("Cards cannot be split");
+        }
     }
-
-    // Add setters if necessary
 }

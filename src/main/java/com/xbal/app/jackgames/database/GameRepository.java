@@ -1,32 +1,27 @@
 package com.xbal.app.jackgames.database;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
+import com.xbal.app.jackgames.model.Game;
 
-import com.xbal.app.jackgames.model.GameStatus;
-
-@Repository
 public class GameRepository {
-    private List<GameStatus> games = new ArrayList<>();
+    private Map<UUID, Game> games = new HashMap<>(0, 0);
 
-    public void addGame(GameStatus gameStatus) {
-        games.add(gameStatus);
+    public Optional<Game> getGameById(UUID id) {
+        return Optional.ofNullable(games.get(id));
     }
 
-    public List<GameStatus> getGames() {
+    public Map<UUID, Game> getAllGames() {
         return games;
     }
 
-    public GameStatus getGameById(int id) {
-        for (GameStatus game : games) {
-            if (game.getSessionId() == id) {
-                return game;
-            }
+    public void save(Game game) {
+        if (game.getSessionId() == null) {
+            game.setSessionId(UUID.randomUUID());
         }
-        return null;
+        games.put(game.getSessionId(), game);
     }
-
-    // Other repository methods here...
 }
