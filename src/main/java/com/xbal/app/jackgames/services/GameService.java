@@ -1,6 +1,5 @@
 package com.xbal.app.jackgames.services;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,7 +14,6 @@ import com.xbal.app.jackgames.exceptions.InvalidPlayerCountException;
 import com.xbal.app.jackgames.model.Deck;
 import com.xbal.app.jackgames.model.Game;
 import com.xbal.app.jackgames.model.GameStatus;
-import com.xbal.app.jackgames.model.Hand;
 import com.xbal.app.jackgames.model.Player;
 import com.xbal.app.jackgames.model.PlayerHand;
 
@@ -45,13 +43,14 @@ public class GameService {
         }
     }
 
-    public void startGame(UUID id) {
+    public GameStatus startGame(UUID id) {
         Optional<Game> optionalGame = gameRepository.getGameById(id);
         if (optionalGame.isPresent()) {
             Game game = optionalGame.get();
             if (game.getGameStatus().isWaitingForPlayers() && game.getPlayers().size() > 1) {
                 game.startGame();
                 gameRepository.save(game);
+                return game.getGameStatus();
             } else {
                 throw new InvalidGameStateException("Game cannot be started at this time");
             }
@@ -64,7 +63,7 @@ public class GameService {
         Optional<Game> optionalGame = gameRepository.getGameById(id);
         if (optionalGame.isPresent()) {
             Game game = optionalGame.get();
-            if (game.getGameStatus() != GameStatus.FINISHED) {
+            if (!game.getGameStatus().isGameCompleted()) {
                 game.stopGame();
                 gameRepository.save(game);
             } else {

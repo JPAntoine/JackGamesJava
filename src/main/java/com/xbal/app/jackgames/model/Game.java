@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.xbal.app.jackgames.exceptions.InvalidGameStateException;
+
 public class Game {
     private UUID sessionId;
     private Deck deck;
@@ -80,14 +82,33 @@ public class Game {
         if (this.dealerHand == null)
             this.dealerHand = new Hand();
 
-        int cardsToDeal = (players.size() + 1) * 2;
-
-        for (int entities = 0; entities < cardsToDeal; entities++) {
-            if (entities % players.size() == 0 && entities / players.size() >= 1) {
+        for (int cardsDelt = 0; cardsDelt < 2; cardsDelt++) {
+            for (int entityHand = 0; entityHand <= players.size(); entityHand++) {
                 Card card = deck.drawCard();
-                this.dealerHand.addCard(card);
+                if (entityHand == players.size()) {
+                    this.dealerHand.addCard(card);
+                } else {
+                    Player player = this.players.get(entityHand);
+                    if (cardsDelt == 1) {
+                        PlayerHand playerHand = this.players.get(entityHand).getPlayerHands().get(0);
+                        playerHand.addCard(card);
+                    } else {
+                        List<Card> handCards = new ArrayList<Card>();
+                        handCards.add(card);
+                        PlayerHand newPlayerHand = new PlayerHand(handCards);
+                        player.addPlayerHand(newPlayerHand);
+                    }
+                }
             }
         }
-
     }
+
+    public void stopGame() {
+        if (!this.status.isGameCompleted()) {
+            this.status.setGameCompleted(true);
+        } else {
+            throw new InvalidGameStateException("Game is already finished");
+        }
+    }
+    
 }

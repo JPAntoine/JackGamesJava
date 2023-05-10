@@ -18,7 +18,7 @@ public class Player {
     public Player(String username) {
         this.id = UUID.randomUUID();
         this.username = username;
-        this.playerHands = new ArrayList<>(null);
+        this.playerHands = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -43,5 +43,9 @@ public class Player {
 
     public void setPlayerHands(List<PlayerHand> playerHands) {
         this.playerHands = playerHands;
+    }
+
+    public void addPlayerHand(PlayerHand playerHand) {
+        this.playerHands.add(playerHand);
     }
 }
