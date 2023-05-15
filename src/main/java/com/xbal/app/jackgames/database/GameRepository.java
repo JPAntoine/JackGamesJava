@@ -5,8 +5,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.stereotype.Repository;
+
 import com.xbal.app.jackgames.model.Game;
 
+@Repository
 public class GameRepository {
     private Map<UUID, Game> games = new HashMap<>(0, 0);
 
